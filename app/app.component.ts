@@ -6,16 +6,11 @@ import { Keg } from './keg.model';
   template: `
   <div class='container'>
     <h1>Kom-Bu-Bu</h1>
-    <div *ngFor="let thisKeg of masterKegList">
-      <h3>{{thisKeg.name}}</h3>
-      <p>Brewed by {{thisKeg.brewer}} in {{thisKeg.brewerLocation}}</p>
-      <p>Notes of {{thisKeg.flavor}}</p>
-      <p class='caffeine' *ngIf='thisKeg.caffeine'>This Kombucha is caffeinated</p>
-      <p>{{thisKeg.sugarContentInGrams}}g of sugar and {{thisKeg.liveCultures}} live cultures per pint</p>
-      <h5>\${{thisKeg.pintPrice}} per pint</h5>
-      <p>{{thisKeg.pintsRemaining}} pints remaining</p>
-    </div>
+    <keg-list [childKegList]='masterKegList' (editKegSender)="editKeg($event)"></keg-list>
     <new-keg (newKegSender)="addKeg($event)"></new-keg>
+    <edit-keg [childSelectedKeg]="selectedKeg" (doneEditSender)="stopKegEdit()"></edit-keg>
+
+
   </div>
   `
 })
@@ -29,7 +24,17 @@ export class AppComponent {
     new Keg('Simply Nature', 'Ucha Kombucha', 'Ginger', false, 13, 'London, UK', 1000000, 7, 11)
   ];
 
+  selectedKeg = null;
+
   addKeg(sentKeg) {
     this.masterKegList.push(sentKeg);
+  }
+
+  editKeg(kegToEdit){
+    this.selectedKeg = kegToEdit;
+  }
+
+  stopKegEdit(){
+    this.selectedKeg = null;
   }
 }
