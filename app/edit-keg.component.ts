@@ -33,4 +33,5 @@ export class EditKegComponent {
     this.doneEditSender.emit();
   }
 
+
 }

@@ -13,6 +13,7 @@ import { Keg } from './keg.model'
       <h5>\${{thisKeg.pintPrice}} per pint</h5>
       <p>{{thisKeg.pintsRemaining}} pints remaining</p>
       <button (click)="editKegButton(thisKeg)">Edit keg</button>
+      <button (click)='pintsMinusOne(thisKeg)'>Sold one!</button>
     </div>
   `
 })
@@ -23,5 +24,9 @@ export class KegListComponent {
 
   editKegButton(kegToEdit){
     this.editKegSender.emit(kegToEdit);
+  }
+
+  pintsMinusOne(keg) {
+    keg.pintsRemaining -= 1;
   }
 }
