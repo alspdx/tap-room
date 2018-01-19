@@ -7,19 +7,14 @@ import { Keg } from './keg.model';
 })
 
 export class EmptinessPipe implements PipeTransform {
-  transform(input: Keg[], howCloseToEmpty) {
+  transform(input: Keg[], filterByName) {
     var output: Keg[] = [];
-    if (howCloseToEmpty === 'underTenPints') {
+    if (filterByName) {
       input.map(function(keg) {
-        if(keg.pintsRemaining <= 10) {
+        const name = keg.name.toLowerCase();
+        const filter = filterByName.toLowerCase();
+        if(name.includes(filter)) {
           output.push(keg);
-        }
-      })
-      return output;
-    } else if (howCloseToEmpty === 'underTwentyFivePints') {
-      input.map(function(keg) {
-        if(keg.pintsRemaining <= 25) {
-          output.push(keg)
         }
       })
       return output;

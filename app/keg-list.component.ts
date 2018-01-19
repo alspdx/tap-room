@@ -4,13 +4,10 @@ import { Keg } from './keg.model'
 @Component({
   selector: 'keg-list',
   template:`
-    <select (change)="optionChange($event.target.value)">
-      <option value="allKegs">All Kegs</option>
-      <option value="underTwentyFivePints">Kegs with 25 or less pints</option>
-      <option value="underTenPints">Kegs with 10 or less pints</option>
-    </select>
+    <input (keyup)="optionChange($event.target.value)">
 
-    <div *ngFor="let thisKeg of childKegList | emptiness:filterByRemaining">
+
+    <div *ngFor="let thisKeg of childKegList | emptiness:filterByName">
       <h3>{{thisKeg.name}}</h3>
       <p>Brewed by {{thisKeg.brewer}} in {{thisKeg.brewerLocation}}</p>
       <p>Notes of {{thisKeg.flavor}}</p>
@@ -19,7 +16,9 @@ import { Keg } from './keg.model'
       <h5>\${{thisKeg.pintPrice}} per pint</h5>
       <p>{{thisKeg.pintsRemaining}} pints remaining</p>
       <button (click)="editKegButton(thisKeg)">Edit keg</button>
-      <button (click)='pintsMinusOne(thisKeg)'>Sold one!</button>
+      <button (click)='pintsMinus(thisKeg, 1)'>Pint Sale</button>
+      <button (click)='pintsMinus(thisKeg, 2)'>Small Growler Sale</button>
+      <button (click)='pintsMinus(thisKeg, 4)'>Large Growler Sale</button>
     </div>
   `
 })
@@ -28,17 +27,17 @@ export class KegListComponent {
   @Input() childKegList: Keg[];
   @Output() editKegSender = new EventEmitter();
 
-  filterByRemaining: string = "allKegs";
+  filterByName: string = "";
 
   editKegButton(kegToEdit){
     this.editKegSender.emit(kegToEdit);
   }
 
-  pintsMinusOne(keg) {
-    keg.pintsRemaining -= 1;
+  pintsMinus(keg, size) {
+    keg.pintsRemaining -= size;
   }
 
   optionChange(option) {
-    this.filterByRemaining = option;
+    this.filterByName = option;
   }
 }
