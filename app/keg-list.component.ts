@@ -4,7 +4,13 @@ import { Keg } from './keg.model'
 @Component({
   selector: 'keg-list',
   template:`
-    <div *ngFor="let thisKeg of childKegList">
+    <select (change)="optionChange($event.target.value)">
+      <option value="allKegs">All Kegs</option>
+      <option value="underTwentyFivePints">Kegs with 25 or less pints</option>
+      <option value="underTenPints">Kegs with 10 or less pints</option>
+    </select>
+
+    <div *ngFor="let thisKeg of childKegList | emptiness:filterByRemaining">
       <h3>{{thisKeg.name}}</h3>
       <p>Brewed by {{thisKeg.brewer}} in {{thisKeg.brewerLocation}}</p>
       <p>Notes of {{thisKeg.flavor}}</p>
@@ -22,11 +28,17 @@ export class KegListComponent {
   @Input() childKegList: Keg[];
   @Output() editKegSender = new EventEmitter();
 
+  filterByRemaining: string = "allKegs";
+
   editKegButton(kegToEdit){
     this.editKegSender.emit(kegToEdit);
   }
 
   pintsMinusOne(keg) {
     keg.pintsRemaining -= 1;
+  }
+
+  optionChange(option) {
+    this.filterByRemaining = option;
   }
 }

@@ -10,8 +10,8 @@ import { Keg } from './keg.model';
     <label>Flavor profile: <input #flavor> </label>
     <label>Has caffeine?
       <select #caffeine>
-        <option [value]=true>Yes</option>
-        <option [value]=false>No</option>
+        <option value="yes">Yes</option>
+        <option value="">No</option>
       </select>
     </label>
     <label>Sugar content (g/16oz): <input #sugar> </label>
@@ -26,8 +26,10 @@ import { Keg } from './keg.model';
 export class NewKegComponent {
   @Output() newKegSender = new EventEmitter();
 
-  submitNewKeg(name: string, brewer: string, flavor: string, caffeine: boolean, sugar: number, location: string, cultures: number, price: number, inventory: number) {
-    const newKegToAdd: Keg = new Keg(name, brewer, flavor, caffeine, sugar, location, cultures, price, inventory);
+  submitNewKeg(name: string, brewer: string, flavor: string, caffeine: string, sugar: string, location: string, cultures: string, price: string, inventory: string) {
+    console.log(caffeine);
+    const newKegToAdd: Keg = new Keg(name, brewer, flavor, (caffeine ? true : false), parseInt(sugar), location, parseInt(cultures), parseInt(price), parseInt(inventory));
+    console.log(newKegToAdd);
     this.newKegSender.emit(newKegToAdd);
   }
 }
